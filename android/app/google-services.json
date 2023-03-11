@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "899214410194",
+    "project_id": "babble-cb3f8",
+    "storage_bucket": "babble-cb3f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899214410194:android:338dcfe0d2895590e4880b",
+        "android_client_info": {
+          "package_name": "com.jahsil.babble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899214410194-hq6tq5bt73eodrl1idgdpvkk6c3ddk39.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jahsil.babble",
+            "certificate_hash": "1f2364002366c11b3c974b9ab124e2a6fa2a4d48"
+          }
+        },
+        {
+          "client_id": "899214410194-65vd2dpsuvqtksevmdukn0av0kp1tuk0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaOPIrq7j_gLMpezpWthyr-GOa3XxhuSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899214410194-515gt3agut3b55dpr2m1o2e7vf9s3i3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
