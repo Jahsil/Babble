@@ -16,26 +16,26 @@ class SignInProvider extends ChangeNotifier {
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
 
-
+  //hasError, errorCode, provider,uid, email, name, imageUrl
   bool _hasError = false;
   bool get hasError => _hasError;
 
-  String? _errorCode ;
+  String? _errorCode;
   String? get errorCode => _errorCode;
 
-  String? _provider ;
+  String? _provider;
   String? get provider => _provider;
 
-  String? _uid ;
+  String? _uid;
   String? get uid => _uid;
 
-  String? _name ;
+  String? _name;
   String? get name => _name;
 
-  String? _email ;
+  String? _email;
   String? get email => _email;
 
-  String? _imageUrl ;
+  String? _imageUrl;
   String? get imageUrl => _imageUrl;
 
 
@@ -45,7 +45,7 @@ class SignInProvider extends ChangeNotifier {
 
   Future checkSignInUser() async {
     final SharedPreferences s = await SharedPreferences.getInstance();
-    _isSignedIn = s.getBool("signed_in") ?? false ;
+    _isSignedIn = s.getBool("signed_in") ?? false;
     notifyListeners();
 
   }
@@ -108,17 +108,19 @@ class SignInProvider extends ChangeNotifier {
   }
 
   Future getUserDataFromFirestore(uid) async {
-    await FirebaseFirestore.instance.collection("users").doc(uid).get().then((DocumentSnapshot snapshot) {
-      _uid = snapshot['uid'];
-      _name = snapshot['name'];
-      _email = snapshot['email'];
-      _imageUrl = snapshot['image_url'];
-      _provider = snapshot['provider'];
+    await FirebaseFirestore.instance.collection("users").doc(uid).get().then((
+        DocumentSnapshot snapshot) => {
+      _uid = snapshot['uid'],
+      _name = snapshot['name'],
+      _email = snapshot['email'],
+      _imageUrl = snapshot['image_url'],
+      _provider = snapshot['provider'],
     });
   }
 
   Future saveDataToFirestore() async {
-    final DocumentReference r = FirebaseFirestore.instance.collection("users").doc(uid);
+    final DocumentReference r =
+    FirebaseFirestore.instance.collection("users").doc(uid);
     await r.set({
       "name" : _name,
       "email" : _email,
@@ -132,24 +134,32 @@ class SignInProvider extends ChangeNotifier {
 
   Future saveDataToSharedPreferences () async{
     final SharedPreferences s = await SharedPreferences.getInstance();
-    await s.setString("name", _name!);
-    await s.setString("email", _email!);
-    await s.setString("uid", _uid!);
-    await s.setString("image_url", _imageUrl!);
-    await s.setString("provider", _provider!);
-
+    await s.setString('name', _name!);
+    await s.setString('email', _email!);
+    await s.setString('uid', _uid!);
+    await s.setString('image_url', _imageUrl!);
+    await s.setString('provider', _provider!);
     notifyListeners();
 
 
   }
 
 
-
+  Future getDataFromSharedPreferences() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    _name = s.getString('name');
+    _email = s.getString('email');
+    _imageUrl = s.getString('image_url');
+    _uid = s.getString('uid');
+    _provider = s.getString('provider');
+    notifyListeners();
+  }
 
 
 
   Future<bool> checkUserExists() async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("users").doc(_uid).get();
+    DocumentSnapshot snapshot =
+    await FirebaseFirestore.instance.collection("users").doc(_uid).get();
     if (snapshot.exists){
       print("Existing user");
       return true;
@@ -175,9 +185,6 @@ class SignInProvider extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     s.clear();
   }
-
-
-
 
 
 }

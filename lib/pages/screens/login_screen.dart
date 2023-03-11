@@ -28,159 +28,168 @@ class _LoginScreenState extends State<LoginScreen> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(left: 40 , right: 40 , top: 90 ,bottom: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Flexible(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image(
-                      image: AssetImage("assets/images/login.jpg"),
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.cover,
-                    ),
-                    SizedBox(height: 20,),
-                    Text("Welcome to Babble login screen",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500,
+          child: Padding(
+            padding:
+            const EdgeInsets.only(left: 40, right: 40, top: 90, bottom: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image(
+                        image: AssetImage("assets/images/login.jpg"),
+                        height: 80,
+                        width: 80,
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                    Text("Please login using google ",
-                      style: TextStyle(
-                        fontSize: 15 ,
-                        color: Colors.grey[600],
+                      const SizedBox(
+                        height: 20,
                       ),
-                    )
-                  ],
-
+                      const Text("Welcome to FlutterFirebase",
+                          style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Learn Authentication with Provider",
+                        style: TextStyle(fontSize: 15, color: Colors.grey[600]),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RoundedLoadingButton(controller: googleController,
+
+                // roundedbutton
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RoundedLoadingButton(
+                      onPressed: () {
+                        handleGoogleSignIn();
+                      },
+                      controller: googleController,
                       successColor: Colors.red,
                       width: MediaQuery.of(context).size.width * 0.80,
                       elevation: 0,
                       borderRadius: 25,
                       color: Colors.red,
-                      onPressed: (){
-                        handleGoogleSignIn();
-                      },
                       child: Wrap(
-                        children: [
+                        children: const [
                           Icon(
                             FontAwesomeIcons.google,
                             size: 20,
                             color: Colors.white,
                           ),
-                          SizedBox(width: 15,),
-                          Text("Sign in with Google",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500
+                          SizedBox(
+                            width: 15,
                           ),
-                          )
+                          Text("Sign in with Google",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500)),
                         ],
                       ),
-
-                  ),
-
-                  SizedBox(height: 10,),
-
-                  RoundedLoadingButton(controller: googleController,
-                    successColor: Colors.blue,
-                    width: MediaQuery.of(context).size.width * 0.80,
-                    elevation: 0,
-                    borderRadius: 25,
-                    color: Colors.blue,
-                    onPressed: (){},
-                    child: Wrap(
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.facebook,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 15,),
-                        Text("Sign in with Facebook",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    // facebook login button
+                    RoundedLoadingButton(
+                      onPressed: () {
+                        //handleFacebookAuth();
+                      },
+                      controller: facebookController,
+                      successColor: Colors.blue,
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      elevation: 0,
+                      borderRadius: 25,
+                      color: Colors.blue,
+                      child: Wrap(
+                        children: const [
+                          Icon(
+                            FontAwesomeIcons.facebook,
+                            size: 20,
+                            color: Colors.white,
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("Sign in with Facebook",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
 
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                    // phoneAuth loading button
+
+                  ],
+                )
+              ],
+            ),
+          )),
     );
   }
 
   Future handleGoogleSignIn () async {
     final sp = context.read<SignInProvider>();
     final ip = context.read<InternetProvider>();
-
     await ip.checkInternetConnection();
 
-    if (ip.hasInternet == false){
-      openSnackBar(context, "Check you Internet connection", Colors.red);
+    if (ip.hasInternet == false) {
+      openSnackBar(context, "Check your Internet connection", Colors.red);
       googleController.reset();
-
-
-    }else{
-      await sp.signInWithGoogle().then((value){
-        if (sp.hasError == true){
-          openSnackBar(context, sp.errorCode.toString() , Colors.red);
+    } else {
+      await sp.signInWithGoogle().then((value) {
+        if (sp.hasError == true) {
+          openSnackBar(context, sp.errorCode.toString(), Colors.red);
           googleController.reset();
-        }else{
-          sp.checkUserExists().then((value) async{
-            if (value == true){
-              try{
-                await sp.getUserDataFromFirestore(sp.uid).then((value) =>
-                    sp.saveDataToSharedPreferences().then((value) =>
-                        sp.setSignIn().then((value) {
-                          googleController.success();
-                          handleAfterSignIn();
-                        })));
-              }catch(e){
-                openSnackBar(context, "Please choose an account", Colors.blue);
-                googleController.reset();
-              }
-
-
-            }else{
-              sp.saveDataToFirestore().then((value) => sp.saveDataToSharedPreferences().then((value) => 
-              sp.setSignIn().then((value){
+        } else {
+          // checking whether user exists or not
+          sp.checkUserExists().then((value) async {
+            if (value == true) {
+              // user exists
+              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                googleController.success();
+                handleAfterSignIn();
+              })));
+            } else {
+              // user does not exist
+              sp.saveDataToFirestore().then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
                 googleController.success();
                 handleAfterSignIn();
               })));
             }
-
-          }
-          );
-
+          });
         }
       });
     }
   }
 
   handleAfterSignIn() {
-    Future.delayed(Duration(milliseconds: 1000)).then((value) => nextScreenReplace(context,const HomeScreen()));
+    Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+      nextScreenReplace(context, const HomeScreen());
+    });
   }
 
 

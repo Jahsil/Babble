@@ -10,33 +10,31 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-Future<void> main() async {
+void main() async {
+  // initialize the application
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-        create: ((context) => SignInProvider()),
-      ),
-      ChangeNotifierProvider(
-        create: ((context) => InternetProvider()),
-      ),
-    ],
-    child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/welcome' : (context) => WelcomePage(),
-          '/login' : (context) => LoginPage(),
-          '/' : (context) => SplashScreen(),
-
-        }
-      ),
-  ),
-  );
+  runApp(const MyApp());
 }
 
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-
-
-
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: ((context) => SignInProvider()),
+        ),
+        ChangeNotifierProvider(
+          create: ((context) => InternetProvider()),
+        ),
+      ],
+      child: const MaterialApp(
+        home: SplashScreen(),
+        debugShowCheckedModeBanner: false,
+      ),
+    );
+  }
+}
