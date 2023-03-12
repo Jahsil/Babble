@@ -1,9 +1,12 @@
+import 'package:babble/pages/screens/forgot_password_screen.dart';
 import 'package:babble/pages/screens/home_screen.dart';
 import 'package:babble/pages/screens/phone_auth.dart';
+import 'package:babble/pages/screens/signup_screen.dart';
 import 'package:babble/provider/internet_provider.dart';
 import 'package:babble/provider/sign_in_provider.dart';
 import 'package:babble/utils/next_screen.dart';
 import 'package:babble/utils/snack_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -11,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import '../forgot_password.dart';
 import '../sign_up.dart';
+import '../user_main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -35,6 +39,46 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
 
 
+  userLogin() async{
+
+    try{
+
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email, password: password);
+      Navigator.pushReplacement(context , MaterialPageRoute(
+          builder: (context) => UserMain(),
+
+      ));
+    }on FirebaseAuthException catch(error){
+      if(error.code == "user-not-found"){
+        print("no user found for the email");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.blueGrey,
+          content: Text("no user found for the email",
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.amber,
+            ),
+          ),
+        ));
+      }
+      else if(error.code == 'wrong-password')
+      {
+        print("wrong password providded by the user");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.blueGrey,
+          content: Text("wrong password providded by the user",
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.amber,
+            ),
+          ),
+        ));
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +98,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                    Text("Welcome to Babble",
                       style:
-                      TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+                      TextStyle(
+                        color: Colors.indigo,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500)),
                    SizedBox(
                     height: 5,
                   ),
@@ -133,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ElevatedButton(
-                                  style: const ButtonStyle(
+                                  style:  ButtonStyle(
                                     backgroundColor: MaterialStatePropertyAll<Color>(Colors.indigo),
                                   ) ,
                                   onPressed: (){
@@ -142,6 +189,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         email = emailController.text;
                                         password = passwordController.text;
                                       });
+
+                                      userLogin();
 
 
                                     }
@@ -155,11 +204,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 TextButton(onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => ForgotPassword(),));
+                                    builder: (context) => ForgotPasswordScreen(),));
                                 },
                                   child: Text(
                                     'Forget Password',
                                     style: TextStyle(
+                                      color: Colors.indigo,
                                       fontSize: 12,
                                     ),
                                   ),
@@ -178,9 +228,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   //   pageBuilder: (context,a,b) => SignUp(),transitionDuration: Duration(seconds: 10)),
                                   //         (route) => false);
                                   Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => SignUp(),));
+                                    builder: (context) => SignUpScreen(),));
                                 },
-                                    child: Text("sign up" )
+                                    child: Text("sign up" ,
+                                    style: TextStyle(
+                                      color: Colors.indigo
+                                    ),)
                                 )
                               ],
                             ),
