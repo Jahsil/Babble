@@ -1,4 +1,5 @@
 import 'package:babble/pages/screens/home_screen.dart';
+import 'package:babble/pages/screens/phone_auth.dart';
 import 'package:babble/provider/internet_provider.dart';
 import 'package:babble/provider/sign_in_provider.dart';
 import 'package:babble/utils/next_screen.dart';
@@ -19,8 +20,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
   final RoundedLoadingButtonController googleController =
       RoundedLoadingButtonController();
-  final RoundedLoadingButtonController facebookController =
-      RoundedLoadingButtonController();
+  final RoundedLoadingButtonController phoneController =
+  RoundedLoadingButtonController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +49,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Text("Welcome to FlutterFirebase",
+                      const Text("Welcome to Babble",
                           style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
                       const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        "Learn Authentication with Provider",
+                        "Please Sign in ",
                         style: TextStyle(fontSize: 15, color: Colors.grey[600]),
                       )
                     ],
@@ -98,7 +99,38 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    
+
+                    RoundedLoadingButton(
+                      onPressed: () {
+                        nextScreen(context, PhoneAuth());
+                        phoneController.reset();
+
+                      },
+                      controller: phoneController,
+                      successColor: Colors.black54,
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      elevation: 0,
+                      borderRadius: 25,
+                      color: Colors.black54,
+                      child: Wrap(
+                        children: const [
+                          Icon(
+                            FontAwesomeIcons.phone,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("Sign in with Phone Number",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500)),
+                        ],
+                      ),
+                    ),
+
                     const SizedBox(
                       height: 10,
                     ),
