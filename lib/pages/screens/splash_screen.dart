@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final sp = context.read<SignInProvider>();
     super.initState();
     // create a timer of 2 seconds
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 1), () {
       sp.isSignedIn == false
           ? nextScreenReplace(context, const LoginScreen())
           : nextScreenReplace(context, const HomeScreen());
@@ -33,10 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-            child: Image(
-              image: AssetImage("assets/images/login.jpg"),
-              height: 180,
-              width: 180,
+            child: CircleAvatar(
+              backgroundImage: AssetImage("assets/images/logo.png"),
+              radius: 250,
             )),
       ),
     );
