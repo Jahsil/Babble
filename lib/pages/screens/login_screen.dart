@@ -98,35 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    // facebook login button
-                    RoundedLoadingButton(
-                      onPressed: () {
-                        //handleFacebookAuth();
-                      },
-                      controller: facebookController,
-                      successColor: Colors.blue,
-                      width: MediaQuery.of(context).size.width * 0.80,
-                      elevation: 0,
-                      borderRadius: 25,
-                      color: Colors.blue,
-                      child: Wrap(
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.facebook,
-                            size: 20,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text("Sign in with Facebook",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500)),
-                        ],
-                      ),
-                    ),
+                    
                     const SizedBox(
                       height: 10,
                     ),
